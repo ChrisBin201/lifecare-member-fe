@@ -8,14 +8,14 @@
                 <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
             </div>
             <form @submit="onSubmit">
-                <InputForm id="id" label="ID" />
-                <InputForm id="password" label="Password" type="password" />
+                <InputForm :show-error="submitCount>0" id="id" label="ID" />
+                <InputForm :show-error="submitCount>0" id="password" label="Password" type="password" />
                 <div class="flex align-items-center justify-content-between mb-6">
                     <div class="flex align-items-center">
                         <Checkbox id="rememberme1" :binary="true" v-model="checked" class="mr-2"></Checkbox>
                         <label for="rememberme1">Remember me</label>
                     </div>
-                    <!-- <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a> -->
+                    <!-- <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{{ submitCount }}</a> -->
                 </div>
                 <Button label="Sign In" type="submit" icon="pi pi-user" class="w-full"></Button>
             </form>
@@ -38,21 +38,16 @@ const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 
-const { handleSubmit } = useForm({
+const { handleSubmit, submitCount } = useForm({
     validationSchema: yup.object({
-        id: yup.string()
-            .matches('^[0-9]+$', 'ID must be only numbers')
-            .min(4, 'ID must be at least 4 characters')
-            .required('ID is required'),
+        id: yup.string().matches('^[0-9]+$', 'ID must be only numbers').min(4, 'ID must be at least 4 characters').required('ID is required'),
         password: yup.string().required('Password is required')
     })
 })
 
 const onSubmit = handleSubmit((payload) => {
-    console.log(payload)
-
     MemberService.login(payload)
-        .then(({ success, data, message}) => {
+        .then(({ success, data, message }) => {
             console.log(data)
             if (success) {
                 jsCookie.set('access_token', data.accessToken)

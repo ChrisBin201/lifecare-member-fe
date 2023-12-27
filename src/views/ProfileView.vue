@@ -8,6 +8,7 @@
 
 <script setup>
 import MemberForm from '@/components/MemberForm.vue'
+import router from '@/router';
 import MemberService from '@/services/MemberService'
 import { useToast } from 'primevue/usetoast'
 import { onBeforeMount, ref } from 'vue'
@@ -32,7 +33,8 @@ const handleSunmit = (member, payload) => {
                 return
             }
             console.log(data)
-            toast.add({ severity: 'success', summary: 'Success', detail: 'Edit member successfully', life: 3000 })
+            toast.add({ severity: 'success', summary: 'Success', detail: 'Edit profile successfully', life: 3000 })
+            router.push('/member')
         })
         .catch((err) => {
             console.log(err)

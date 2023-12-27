@@ -1,27 +1,27 @@
 <template>
-    <div class="flex h-screen">
+    <div class="flex">
         <div class="m-auto surface-card p-4 w-full">
             <div class="text-center mb-5">
                 <div class="text-900 text-3xl font-medium mb-3">Member Info</div>
             </div>
             <form @submit="onSubmit">
-                <InputForm :disabled="!isAdmin" id="id" label="ID" />
-                <InputForm id="name" label="Name" />
+                <InputForm :disabled="!isAdmin" id="id" label="ID" :show-error="submitCount > 0" />
+                <InputForm id="name" label="Name" :show-error="submitCount > 0" />
                 <div>
                     <label for="email" class="block text-900 font-medium mb-2">Email</label>
                     <div class="flex gap-2 align-items-center">
-                        <InputForm id="email" />
-                        <span class="text-xl font-medium mb-5">@</span>
-                        <InputText disabled v-model="emailDomain" class="mb-5 opacity-80" :class="{ 'p-invalid': errorMessage && !emailDomain }" aria-describedby="text-error" />
-                        <Dropdown v-model="emailName" :options="EMAIL_DOMAINS.map((e) => e.name)" @update:model-value="onChangeEmailDomain" placeholder="Select a Domain" class="w-full mb-5" />
+                        <InputForm id="email" :show-error="submitCount > 0" />
+                        <span class="text-xl font-medium mb-4">@</span>
+                        <InputText disabled v-model="emailDomain" class="mb-4 opacity-80" :class="{ 'p-invalid': submitCount > 0 && errorMessage && !emailDomain }" aria-describedby="text-error" />
+                        <Dropdown v-model="emailName" :options="EMAIL_DOMAINS.map((e) => e.name)" @update:model-value="onChangeEmailDomain" placeholder="Select a Domain" class="w-full mb-4" />
                     </div>
                 </div>
-                <InputForm id="phone" label="Phone" />
+                <InputForm id="phone" label="Phone" :show-error="submitCount > 0" />
                 <div class="mb-4">
-                    <InputForm id="password" label="New password" type="password" />
+                    <InputForm id="password" label="New password" type="password" :show-error="submitCount > 0" />
                     <div class="tw-w-[500px] tw-text-gray-500">English case/case/special/numeric, 2 combinations (10-20 characters), 3 combinations (8-20 characters), Serial number not allowed, Special characters are !@#$%^&*</div>
                 </div>
-                <InputForm id="passwordConfirm" label="Password Confirm" type="password" />
+                <InputForm id="passwordConfirm" label="Password Confirm" type="password" :show-error="submitCount > 0" />
                 <div v-if="isAdmin" class="mb-5">
                     <label for="permission" class="block text-900 font-medium mb-2">Permission</label>
                     <MultiSelect v-model="selectedPermissions" display="chip" :options="permissions" optionLabel="name" placeholder="Select Permissions" :maxSelectedLabels="3" class="w-full md:w-20rem" />
@@ -149,9 +149,12 @@ watch(
     }
 )
 
-const { handleSubmit, setFieldError, setFieldValue } = useForm({
+const { handleSubmit, setFieldError, setFieldValue, submitCount } = useForm({
     validationSchema: yup.object({
-        id: yup.string().matches('^[0-9]+$', 'ID must be only numbers').min(4, 'ID must be at least 4 characters').required('ID is required'),
+        id: yup.string().required('ID is required').matches('^[0-9]+$', {
+            message: 'ID must be only numbers',
+            excludeEmptyString: true
+        }).min(4, 'ID must be at least 4 characters'),
         name: yup.string().matches('^[a-zA-Z\\s]+$', 'Name must be only letters').required('Name is required'),
         email: yup.string().required('Email is required'),
         phone: yup.string().min(10, 'Phone must be at least 10 characters').matches('^[0-9]+$', 'Phone must be only numbers').required('Phone is required'),
@@ -171,7 +174,7 @@ const { handleSubmit, setFieldError, setFieldValue } = useForm({
         name: props.member.name,
         email: props.member.email.split('@')[0],
         phone: props.member.phone,
-        permissions: props.member.permissions.map((p) => p.id),
+        permissions: props.member.permissions? props.member.permissions.map((p) => p.id): [],
         status: props.member.status
     }
 })
@@ -205,7 +208,8 @@ const onSubmit = handleSubmit((values) => {
 })
 
 const emailValid = (email) => {
-    let emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
+    // let emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
+    let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     return emailRegex.test(email)
 }
 
