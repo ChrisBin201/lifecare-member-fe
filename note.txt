@@ -1,0 +1,8 @@
+Create folder views and components (ex: views > home > index.vue, components > module > home > index.vue)
+Create folder utils/constant to store common variable
+Coding convention
+Remove console log
+Break to components to reuse or import anywhere 
+Can't be disable Eslint rule
+Should create HTTP request file to config authen  token, header, method, param, refresh token
+Create env/config file to store API_URL, SECRET,...

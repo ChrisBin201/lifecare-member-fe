@@ -94,6 +94,7 @@ const { handleSubmit, setFieldError, submitCount } = useForm({
             .required('Password confirm is required')
             // .min(6)
             .oneOf([yup.ref('password')], 'Passwords must match')
+            /*create common file to store message or regex or validation*/
     })
 })
 
@@ -149,6 +150,7 @@ const onSubmit = handleSubmit((values) => {
 
 const emailValid = (email) => {
     // let emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
+    /*create common file to store message or regex or validation*/
     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     return emailRegex.test(email)
 }
@@ -160,6 +162,7 @@ const passwordValidated = (password) => {
     }
 
     // Check if the password contains only letters, numbers, and allowed special characters
+    /*create common file to store message or regex or validation*/
     const pattern = /^[a-zA-Z0-9!@#$%^&*]+$/
     if (!pattern.test(password)) {
         return false

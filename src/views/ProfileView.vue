@@ -32,6 +32,7 @@ const handleSunmit = (member, payload) => {
                 toast.add({ severity: 'error', summary: 'Error', detail: message, life: 3000 })
                 return
             }
+            // remove console.log
             console.log(data)
             toast.add({ severity: 'success', summary: 'Success', detail: 'Edit profile successfully', life: 3000 })
             router.push('/member')

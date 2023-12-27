@@ -40,6 +40,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         let token = jsCookie.get('access_token')
+        // Should to check the role of the user to access the routes
         if(!token) {
             next({
                 path: '/login',

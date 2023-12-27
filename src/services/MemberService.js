@@ -45,6 +45,7 @@ const MemberService = {
     },
 
     updateMemberInfo(memberNo, payload) {
+       /* Should to create http request file to config authen  token, header, method, param, refresh token,...*/
         return fetch(`${API_URL}/member/${memberNo}`, {
             method: 'PUT',
             headers: {
@@ -56,6 +57,7 @@ const MemberService = {
     },
 
     deleteMember(memberNo) {
+          /* Should to create http request file to config authen  token, header, method, param, refresh token,...*/
         return fetch(`${API_URL}/member/${memberNo}`, {
             method: 'DELETE',
             headers: {

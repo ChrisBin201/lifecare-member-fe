@@ -10,7 +10,7 @@
                     <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
                 </template>
             </Toolbar> -->
-
+<!-- /*Create common table file*/ -->
             <DataTable
                 ref="dt"
                 :value="members"
@@ -106,6 +106,7 @@
                     </template>
                 </Column>
             </DataTable>
+            <!-- /*Create common table file*/ -->
             <Dialog v-model:visible="visible" modal :style="{ width: '80rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                 <MemberForm @submit="handleSubmitMember" :member="selectedMember" />
             </Dialog>
